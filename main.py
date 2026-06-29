@@ -94,3 +94,15 @@ if st.button("Generate Advice"):
 - Eat on time.
 - Reduce stress with yoga or meditation.
 """)
+
+import streamlit as st
+
+st.set_page_config(page_title="Diet and Nutrition Advisor", page_icon="🥗")
+
+st.sidebar.title("🥗 About")
+st.sidebar.write("AI-powered Diet & Nutrition Advisor")
+st.sidebar.success("Developed by B. Vikash Naidu")
+
+st.title("🥗 Diet and Nutrition Advisor Agent")
+
+st.image("https://images.unsplash.com/photo-1490645935967-10de6ba17061", width=700)
