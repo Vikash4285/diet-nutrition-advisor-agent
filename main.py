@@ -1,117 +1,96 @@
-print("===================================")
-print("  Diet and Nutrition Advisor Agent")
-print("===================================")
+import streamlit as st
 
-# Get user details
-name = input("Enter your name: ")
-age = int(input("Enter your age: "))
-gender = input("Enter your gender (Male/Female): ")
-height = float(input("Enter your height (cm): "))
-weight = float(input("Enter your weight (kg): "))
-activity = input("Enter activity level (Low/Moderate/High): ")
-goal = input("Enter your goal (Lose/Maintain/Gain): ")
+st.set_page_config(page_title="Diet and Nutrition Advisor", page_icon="🥗")
 
-# Calculate BMI
-height_in_meters = height / 100
-bmi = weight / (height_in_meters * height_in_meters)
+st.title("🥗 Diet and Nutrition Advisor Agent")
 
-# BMI Category
-if bmi < 18.5:
-    category = "Underweight"
-elif bmi < 25:
-    category = "Normal Weight"
-elif bmi < 30:
-    category = "Overweight"
-else:
-    category = "Obese"
+name = st.text_input("Enter your name")
+age = st.number_input("Enter your age", 1, 100)
+gender = st.selectbox("Gender", ["Male", "Female"])
+height = st.number_input("Height (cm)", min_value=50.0)
+weight = st.number_input("Weight (kg)", min_value=10.0)
+activity = st.selectbox("Activity Level", ["Low", "Moderate", "High"])
+goal = st.selectbox("Goal", ["Lose", "Maintain", "Gain"])
 
-# Display details
-print("\n----- User Details -----")
-print("Name:", name)
-print("Age:", age)
-print("Gender:", gender)
-print("Height:", height, "cm")
-print("Weight:", weight, "kg")
-print("Activity:", activity)
-print("Goal:", goal)
+if st.button("Generate Advice"):
 
-print("\nYour BMI is:", round(bmi, 2))
-print("BMI Category:", category)
-# Diet Recommendation
-print("\n----- Diet Recommendation -----")
+    bmi = weight / ((height / 100) ** 2)
 
-if goal.lower() == "lose":
-    print("Breakfast : Oats + Green Tea")
-    print("Lunch     : Brown Rice + Dal + Salad")
-    print("Dinner    : Grilled Chicken/Paneer + Vegetables")
+    if bmi < 18.5:
+        category = "Underweight"
+    elif bmi < 25:
+        category = "Normal Weight"
+    elif bmi < 30:
+        category = "Overweight"
+    else:
+        category = "Obese"
 
-elif goal.lower() == "gain":
-    print("Breakfast : Milk + Banana + Peanut Butter")
-    print("Lunch     : Rice + Chicken/Paneer + Eggs")
-    print("Dinner    : Chapati + Paneer + Fruits")
+    st.subheader("Your Details")
+    st.write("**Name:**", name)
+    st.write("**Age:**", age)
+    st.write("**Gender:**", gender)
+    st.write("**BMI:**", round(bmi, 2))
+    st.write("**Category:**", category)
 
-elif goal.lower() == "maintain":
-    print("Breakfast : Idli/Dosa + Sambar")
-    print("Lunch     : Rice + Dal + Vegetables")
-    print("Dinner    : Chapati + Curry + Salad")
+    st.subheader("🥗 Diet Recommendation")
 
-else:
-    print("Please enter a valid goal (Lose, Maintain, Gain)")
+    if goal == "Lose":
+        st.write("Breakfast: Oats + Green Tea")
+        st.write("Lunch: Brown Rice + Dal + Salad")
+        st.write("Dinner: Grilled Chicken/Paneer + Vegetables")
 
-# Water Intake Recommendation
-water = weight * 0.035
+    elif goal == "Gain":
+        st.write("Breakfast: Milk + Banana + Peanut Butter")
+        st.write("Lunch: Rice + Chicken/Paneer + Eggs")
+        st.write("Dinner: Chapati + Paneer + Fruits")
 
-print("\n----- Water Intake Recommendation -----")
-print("Drink", round(water, 2), "litres of water per day.")
-# Exercise Recommendation
-print("\n----- Exercise Recommendation -----")
+    else:
+        st.write("Breakfast: Idli/Dosa + Sambar")
+        st.write("Lunch: Rice + Dal + Vegetables")
+        st.write("Dinner: Chapati + Curry + Salad")
 
-if goal.lower() == "lose":
-    print("• 45 minutes Brisk Walking")
-    print("• 30 minutes Jogging")
-    print("• 20 minutes Cycling")
+    water = weight * 0.035
+    st.subheader("💧 Water Intake")
+    st.write(f"Drink **{water:.2f} litres** per day.")
 
-elif goal.lower() == "gain":
-    print("• Weight Training - 45 minutes")
-    print("• Push-ups - 3 sets")
-    print("• Squats - 3 sets")
+    st.subheader("🏃 Exercise")
 
-elif goal.lower() == "maintain":
-    print("• 30 minutes Walking")
-    print("• Yoga - 20 minutes")
-    print("• Stretching - 15 minutes")
+    if goal == "Lose":
+        st.write("• 45 min Brisk Walking")
+        st.write("• 30 min Jogging")
+        st.write("• 20 min Cycling")
+    elif goal == "Gain":
+        st.write("• Weight Training - 45 min")
+        st.write("• Push-ups - 3 sets")
+        st.write("• Squats - 3 sets")
+    else:
+        st.write("• 30 min Walking")
+        st.write("• Yoga - 20 min")
+        st.write("• Stretching - 15 min")
 
-else:
-    print("No exercise recommendation available.")
+    if activity == "Low":
+        calories = 2000
+    elif activity == "Moderate":
+        calories = 2500
+    else:
+        calories = 3000
 
-# Daily Calorie Recommendation
-print("\n----- Daily Calorie Recommendation -----")
+    if goal == "Lose":
+        calories -= 500
+    elif goal == "Gain":
+        calories += 500
 
-if activity.lower() == "low":
-    calories = 2000
-elif activity.lower() == "moderate":
-    calories = 2500
-elif activity.lower() == "high":
-    calories = 3000
-else:
-    calories = 2200
+    st.subheader("🔥 Daily Calories")
+    st.write(f"Recommended Calories: **{calories} kcal/day**")
 
-# Adjust calories based on goal
-if goal.lower() == "lose":
-    calories -= 500
-elif goal.lower() == "gain":
-    calories += 500
-
-print("Recommended Daily Calories:", calories, "kcal")
-
-# Healthy Lifestyle Tips
-print("\n----- Healthy Lifestyle Tips -----")
-
-print("1. Eat plenty of fruits and vegetables.")
-print("2. Drink enough water every day.")
-print("3. Exercise regularly.")
-print("4. Sleep for 7-8 hours every night.")
-print("5. Avoid junk food and sugary drinks.")
-print("6. Include protein in every meal.")
-print("7. Eat meals at regular times.")
-print("8. Reduce stress through meditation or yoga.")
+    st.subheader("✅ Healthy Lifestyle Tips")
+    st.write("""
+- Eat fruits and vegetables.
+- Drink enough water.
+- Exercise regularly.
+- Sleep 7–8 hours.
+- Avoid junk food.
+- Include protein in meals.
+- Eat on time.
+- Reduce stress with yoga or meditation.
+""")
